@@ -1,0 +1,1199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SmartPrice — Compare Prices Across Every Store</title>
+<meta name="description" content="Real-time intelligence connecting you to Amazon, Flipkart, Croma, and 50+ major retailers. The smarter way to shop starts here.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,500&family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+  /* ===================== TOKENS ===================== */
+  :root{
+    --primary:#4F46E5;
+    --primary-hover:#4338CA;
+    --primary-light:#EEF2FF;
+    --primary-dark:#3730A3;
+    --bg-section:#F1F3FC;
+    --bg-section-2:#F7F8FD;
+    --bg-white:#FFFFFF;
+    --text-dark:#0F172A;
+    --text-body:#64748B;
+    --text-muted:#94A3B8;
+    --accent-cyan:#38BDF8;
+    --green:#16A34A;
+    --green-bg:#ECFDF5;
+    --green-border:#A7F3D0;
+    --border:#E6E9F5;
+    --shadow-sm:0 2px 8px rgba(15,23,42,.06);
+    --shadow-md:0 8px 24px rgba(15,23,42,.08);
+    --shadow-lg:0 20px 50px rgba(79,70,229,.14);
+    --radius-sm:8px;
+    --radius-md:14px;
+    --radius-lg:22px;
+    --font-serif:'Playfair Display', Georgia, serif;
+    --font-sans:'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    --container:1280px;
+  }
+
+  *{box-sizing:border-box;margin:0;padding:0;}
+  html{scroll-behavior:smooth;scroll-padding-top:84px;}
+  body{
+    font-family:var(--font-sans);
+    color:var(--text-dark);
+    background:var(--bg-white);
+    line-height:1.5;
+    -webkit-font-smoothing:antialiased;
+  }
+  img{max-width:100%;display:block;}
+  a{color:inherit;text-decoration:none;}
+  ul{list-style:none;}
+  button{font-family:inherit;cursor:pointer;border:none;background:none;}
+  input,select,textarea{font-family:inherit;font-size:1rem;}
+  .container{max-width:var(--container);margin:0 auto;padding:0 20px;}
+  section{padding:64px 0;}
+  .icon{width:20px;height:20px;flex-shrink:0;}
+  svg{display:block;}
+
+  @media (prefers-reduced-motion: reduce){
+    *{animation-duration:.01ms !important;animation-iteration-count:1 !important;transition-duration:.01ms !important;scroll-behavior:auto !important;}
+  }
+
+  /* ===================== TYPOGRAPHY ===================== */
+  .eyebrow{
+    font-family:var(--font-serif);
+    font-size:.78rem;
+    letter-spacing:.12em;
+    text-transform:uppercase;
+    color:var(--primary);
+    font-weight:600;
+  }
+  h1,h2,h3,h4{font-weight:800;color:var(--text-dark);line-height:1.15;letter-spacing:-.02em;}
+  h1{font-size:2.2rem;}
+  h2{font-size:1.9rem;}
+  h3{font-size:1.15rem;}
+  p{color:var(--text-body);}
+  .section-head{text-align:center;max-width:640px;margin:0 auto 40px;}
+  .section-head h2{margin-bottom:10px;}
+
+  /* ===================== BUTTONS ===================== */
+  .btn{
+    display:inline-flex;align-items:center;justify-content:center;gap:8px;
+    padding:13px 26px;border-radius:var(--radius-sm);
+    font-weight:600;font-size:.95rem;
+    transition:all .2s ease;
+    white-space:nowrap;
+  }
+  .btn-primary{background:var(--primary);color:#fff;box-shadow:0 4px 14px rgba(79,70,229,.28);}
+  .btn-primary:hover{background:var(--primary-hover);transform:translateY(-2px);box-shadow:0 8px 20px rgba(79,70,229,.35);}
+  .btn-outline{background:#fff;color:var(--primary);border:1.5px solid var(--border);}
+  .btn-outline:hover{border-color:var(--primary);background:var(--primary-light);transform:translateY(-2px);}
+  .btn-block{width:100%;}
+  .btn[disabled]{opacity:.6;cursor:not-allowed;}
+  .btn[disabled]:hover{transform:none;}
+
+  /* ===================== HEADER ===================== */
+  header{
+    position:sticky;top:0;z-index:100;
+    background:var(--bg-section);
+    border-bottom:2.5px solid var(--accent-cyan);
+    transition:box-shadow .25s ease;
+  }
+  header.scrolled{box-shadow:0 6px 20px rgba(15,23,42,.08);}
+  .nav-wrap{display:flex;align-items:center;justify-content:space-between;height:72px;}
+  .logo{display:flex;align-items:center;gap:8px;font-size:1.3rem;font-weight:800;color:var(--primary);}
+  .logo .logo-badge{
+    width:34px;height:34px;border-radius:9px;background:var(--primary-light);
+    display:flex;align-items:center;justify-content:center;color:var(--primary);
+  }
+  nav.main-nav{display:none;}
+  nav.main-nav ul{display:flex;gap:30px;font-family:var(--font-serif);font-size:1.02rem;}
+  nav.main-nav a{position:relative;color:var(--text-dark);padding:6px 0;transition:color .2s;}
+  nav.main-nav a:hover{color:var(--primary);}
+  nav.main-nav a.active{color:var(--primary);font-weight:600;}
+  nav.main-nav a.active::after{
+    content:"";position:absolute;left:0;right:0;bottom:-2px;height:2px;background:var(--primary);
+  }
+  .header-actions{display:none;align-items:center;gap:20px;}
+  .header-actions .signin{font-family:var(--font-serif);font-weight:600;color:var(--primary);}
+  .header-actions .signin:hover{text-decoration:underline;}
+  .menu-toggle{display:flex;align-items:center;justify-content:center;width:40px;height:40px;color:var(--text-dark);}
+  .mobile-panel{
+    display:none;flex-direction:column;gap:18px;
+    background:var(--bg-section);border-top:1px solid var(--border);
+    padding:22px 20px 28px;
+  }
+  .mobile-panel.open{display:flex;}
+  .mobile-panel a{font-family:var(--font-serif);font-size:1.05rem;color:var(--text-dark);}
+  .mobile-panel a.active{color:var(--primary);font-weight:600;}
+  .mobile-panel .mp-actions{display:flex;flex-direction:column;gap:10px;margin-top:6px;}
+
+  @media (min-width:1024px){
+    nav.main-nav{display:block;}
+    .header-actions{display:flex;}
+    .menu-toggle{display:none;}
+  }
+
+  /* ===================== HERO ===================== */
+  .hero{background:var(--bg-section);padding:60px 0 70px;overflow:hidden;}
+  .hero .container{display:grid;gap:42px;align-items:center;}
+  .hero h1{font-size:2.5rem;}
+  .hero h1 .accent{color:var(--primary);}
+  .hero p.lead{font-size:1.08rem;margin:20px 0 28px;max-width:540px;}
+  .hero-buttons{display:flex;flex-wrap:wrap;gap:14px;margin-bottom:34px;}
+  .partners{display:flex;align-items:center;gap:18px;flex-wrap:wrap;}
+  .partners .eyebrow{font-size:.7rem;}
+  .partner-icons{display:flex;gap:14px;color:var(--text-muted);}
+  .partner-icons svg{width:20px;height:20px;}
+
+  .hero-card{
+    background:#fff;border-radius:var(--radius-lg);box-shadow:var(--shadow-lg);
+    padding:24px;animation:floatIn .8s ease both;
+  }
+  @keyframes floatIn{from{opacity:0;transform:translateY(18px);}to{opacity:1;transform:translateY(0);}}
+  .search-row{
+    display:flex;align-items:center;gap:10px;border:1.5px solid var(--border);
+    border-radius:var(--radius-sm);padding:14px 16px;color:var(--text-dark);font-weight:500;
+  }
+  .search-row svg{color:var(--primary);}
+  .deal-row{
+    display:flex;align-items:center;justify-content:space-between;gap:10px;
+    border-radius:var(--radius-sm);padding:16px;margin-top:14px;border:1px solid var(--border);
+  }
+  .deal-row.best{background:var(--green-bg);border-left:4px solid var(--green);border-color:var(--green-border);}
+  .deal-left{display:flex;align-items:center;gap:12px;}
+  .store-badge{
+    width:42px;height:42px;border-radius:9px;background:#F1F3FC;border:1px solid var(--border);
+    display:flex;align-items:center;justify-content:center;font-weight:800;font-size:.72rem;color:var(--text-dark);
+    flex-shrink:0;
+  }
+  .deal-label{font-size:.78rem;color:var(--text-muted);}
+  .deal-price{font-weight:800;font-size:1.15rem;}
+  .save-pill{background:var(--green);color:#fff;font-size:.72rem;font-weight:700;padding:5px 12px;border-radius:99px;white-space:nowrap;}
+  .deal-meta{font-size:.85rem;color:var(--text-muted);text-align:right;}
+
+  @media (min-width:1024px){
+    .hero .container{grid-template-columns:1.05fr 1fr;}
+    .hero h1{font-size:3.4rem;}
+  }
+
+  /* ===================== CHAT FAB ===================== */
+  .chat-fab{
+    position:fixed;right:22px;bottom:22px;z-index:90;
+    width:56px;height:56px;border-radius:50%;background:var(--primary);color:#fff;
+    display:flex;align-items:center;justify-content:center;box-shadow:0 10px 28px rgba(79,70,229,.4);
+    transition:transform .2s ease;
+  }
+  .chat-fab:hover{transform:scale(1.08);}
+  .chat-fab svg{width:24px;height:24px;}
+
+  /* ===================== TRUSTED BRANDS ===================== */
+  .brands{background:var(--bg-section);border-top:2.5px solid var(--accent-cyan);padding:46px 0;}
+  .brands .eyebrow{display:block;text-align:center;margin-bottom:26px;}
+  .brand-row{
+    display:flex;flex-wrap:wrap;justify-content:center;align-items:center;gap:28px 40px;
+    font-weight:700;font-size:1.2rem;
+  }
+  .brand-row span{opacity:.9;transition:opacity .2s;}
+  .brand-row span:hover{opacity:1;}
+  .b-amazon{color:#37474F;}
+  .b-flipkart{color:#5B8DEF;}
+  .b-croma{color:#EF6461;}
+  .b-reliance{color:#7886B8;}
+  .b-vijay{color:#E25B5B;}
+  .b-tata{color:#37474F;}
+
+  /* ===================== CATEGORIES ===================== */
+  .categories{background:var(--bg-white);}
+  .cat-head{display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:14px;margin-bottom:34px;}
+  .cat-head p{margin-top:6px;max-width:420px;}
+  .view-all{display:inline-flex;align-items:center;gap:6px;color:var(--primary);font-weight:700;white-space:nowrap;}
+  .view-all svg{width:16px;height:16px;transition:transform .2s;}
+  .view-all:hover svg{transform:translateX(4px);}
+  .cat-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:18px;}
+  .cat-card{
+    background:#fff;border:1px solid var(--border);border-radius:var(--radius-md);padding:22px 20px;
+    transition:transform .22s ease, box-shadow .22s ease, border-color .22s ease;
+  }
+  .cat-card:hover{transform:translateY(-5px);box-shadow:var(--shadow-md);border-color:var(--primary-light);}
+  .cat-icon{
+    width:42px;height:42px;border-radius:10px;background:var(--primary-light);color:var(--primary);
+    display:flex;align-items:center;justify-content:center;margin-bottom:14px;transition:background .2s,color .2s;
+  }
+  .cat-card:hover .cat-icon{background:var(--primary);color:#fff;}
+  .cat-card h3{font-size:1.02rem;margin-bottom:4px;}
+  .cat-card p{font-size:.85rem;color:var(--text-muted);}
+
+  @media (min-width:640px){.cat-grid{grid-template-columns:repeat(3,1fr);}}
+  @media (min-width:1024px){.cat-grid{grid-template-columns:repeat(4,1fr);}}
+
+  /* ===================== HOW IT WORKS ===================== */
+  .how{background:var(--bg-section);}
+  .steps{display:grid;gap:40px;margin-top:44px;}
+  .step{text-align:center;}
+  .step-circle{
+    width:84px;height:84px;border-radius:50%;border:2px solid var(--primary);background:#fff;color:var(--primary);
+    display:flex;align-items:center;justify-content:center;margin:0 auto 18px;transition:transform .25s ease;
+  }
+  .step-circle svg{width:30px;height:30px;}
+  .step:hover .step-circle{transform:scale(1.06);}
+  .step-circle.filled{background:var(--primary);color:#fff;}
+  .step h3{margin-bottom:8px;}
+  .step p{font-size:.92rem;max-width:280px;margin:0 auto;}
+  @media (min-width:768px){.steps{grid-template-columns:repeat(3,1fr);}}
+
+  /* ===================== FEATURE BLOCKS ===================== */
+  .feature{background:var(--bg-white);}
+  .feature.alt{background:var(--bg-section-2);}
+  .feature .container{display:grid;gap:36px;align-items:center;}
+  .feature-text .eyebrow{display:inline-block;background:var(--primary-light);padding:6px 14px;border-radius:99px;margin-bottom:16px;}
+  .feature-text h2{margin-bottom:16px;}
+  .feature-text p{margin-bottom:20px;}
+  .check-list li{display:flex;align-items:center;gap:10px;margin-bottom:12px;font-weight:600;color:var(--text-dark);}
+  .check-list svg{width:20px;height:20px;color:var(--green);flex-shrink:0;}
+
+  .chart-card{background:#fff;border-radius:var(--radius-lg);box-shadow:var(--shadow-md);padding:26px;}
+  .bars{display:flex;align-items:flex-end;gap:16px;height:160px;justify-content:center;}
+  .bars i{display:block;width:34px;border-radius:6px 6px 0 0;background:linear-gradient(180deg,#A5B4FC,#6366F1);}
+  .bars i:nth-child(1){height:60%;}
+  .bars i:nth-child(2){height:74%;}
+  .bars i:nth-child(3){height:100%;background:linear-gradient(180deg,#6366F1,#4338CA);}
+  .bars i:nth-child(4){height:48%;}
+  .bars i:nth-child(5){height:70%;}
+  .chart-caption{text-align:center;color:var(--text-muted);font-size:.85rem;margin-top:14px;}
+
+  .alert-card{background:#fff;border-radius:var(--radius-lg);box-shadow:var(--shadow-md);padding:24px;}
+  .alert-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:18px;}
+  .alert-head span{color:var(--primary);font-weight:700;font-size:.85rem;}
+  .alert-item{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:14px;border:1px solid var(--border);border-radius:var(--radius-sm);margin-bottom:12px;}
+  .alert-item:last-child{margin-bottom:0;}
+  .alert-left{display:flex;align-items:center;gap:12px;}
+  .alert-icon{width:42px;height:42px;border-radius:9px;background:var(--primary-light);color:var(--primary);display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+  .alert-name{font-weight:700;font-size:.95rem;}
+  .alert-drop{color:var(--green);font-size:.82rem;font-weight:600;}
+  .bell-btn{width:38px;height:38px;border-radius:50%;background:var(--primary-light);color:var(--primary);display:flex;align-items:center;justify-content:center;}
+
+  @media (min-width:1024px){
+    .feature .container{grid-template-columns:1fr 1fr;}
+    .feature.reverse .container{direction:rtl;}
+    .feature.reverse .container > *{direction:ltr;}
+  }
+
+  /* ===================== COMPARISON TABLE ===================== */
+  .compare-table-section{background:var(--bg-section);}
+  .ctable-wrap{background:#fff;border-radius:var(--radius-lg);box-shadow:var(--shadow-md);overflow:hidden;overflow-x:auto;}
+  table.ctable{width:100%;border-collapse:collapse;min-width:680px;}
+  table.ctable th{
+    font-family:var(--font-serif);text-align:left;font-size:.74rem;letter-spacing:.08em;text-transform:uppercase;
+    color:var(--text-muted);padding:16px 18px;border-bottom:1px solid var(--border);font-weight:600;
+  }
+  table.ctable td{padding:18px;border-bottom:1px solid var(--border);vertical-align:middle;}
+  table.ctable tr:last-child td{border-bottom:none;}
+  table.ctable tr.best-row{background:var(--green-bg);}
+  .store-name{display:flex;align-items:center;gap:10px;font-weight:700;}
+  .best-badge{background:var(--green);color:#fff;font-size:.68rem;font-weight:700;padding:3px 9px;border-radius:5px;}
+  .price-cell{font-weight:800;}
+  .delivery-good{color:var(--green);font-weight:600;}
+  .delivery-neutral{color:var(--text-body);}
+  .stars{display:flex;gap:2px;color:var(--green);}
+  .stars svg{width:15px;height:15px;}
+  .stars svg.empty{color:#E2E8F0;}
+
+  /* ===================== AI ASSISTANT ===================== */
+  .ai-section{background:var(--bg-white);}
+  .ai-mock{background:var(--bg-section);border-radius:var(--radius-lg);padding:22px;}
+  .bubble-user{
+    background:var(--primary);color:#fff;border-radius:16px 16px 4px 16px;padding:14px 18px;
+    max-width:88%;margin-left:auto;font-size:.92rem;margin-bottom:14px;
+  }
+  .bubble-ai{background:#fff;border-radius:16px;box-shadow:var(--shadow-sm);padding:16px;margin-bottom:14px;font-size:.92rem;}
+  .ai-product{display:flex;align-items:center;gap:12px;background:#fff;border-radius:var(--radius-sm);padding:10px 12px;margin-top:10px;box-shadow:var(--shadow-sm);}
+  .ai-product .thumb{width:46px;height:46px;border-radius:8px;background:var(--bg-section);flex-shrink:0;}
+  .ai-product .pname{font-weight:700;font-size:.88rem;}
+  .ai-product .pprice{color:var(--primary);font-weight:800;font-size:.92rem;}
+  .ai-product .pold{color:var(--text-muted);text-decoration:line-through;font-size:.78rem;margin-left:6px;}
+  .ai-product svg{margin-left:auto;color:var(--text-muted);width:16px;height:16px;}
+  .ai-input{display:flex;align-items:center;gap:10px;background:#fff;border-radius:99px;padding:8px 8px 8px 18px;margin-top:14px;box-shadow:var(--shadow-sm);}
+  .ai-input span{flex:1;color:var(--text-muted);font-size:.9rem;}
+  .ai-send{width:38px;height:38px;border-radius:50%;background:var(--primary);color:#fff;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+
+  .ai-icon-badge{width:54px;height:54px;border-radius:14px;background:var(--primary-light);color:var(--primary);display:flex;align-items:center;justify-content:center;margin-bottom:18px;}
+  .mini-cards{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:22px;}
+  .mini-card{background:var(--bg-section);border-radius:var(--radius-sm);padding:16px;}
+  .mini-card h4{font-size:.92rem;margin-bottom:6px;}
+  .mini-card p{font-size:.8rem;}
+
+  @media (min-width:1024px){.ai-section .container{display:grid;grid-template-columns:1fr 1fr;gap:50px;align-items:center;}}
+
+  /* ===================== STATS ===================== */
+  .stats{background:linear-gradient(120deg,#5246E8,#4338CA 60%,#3730A3);border-top:2.5px solid var(--accent-cyan);padding:54px 0;}
+  .stats-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:32px;text-align:center;color:#fff;}
+  .stats-grid b{display:block;font-size:2.2rem;font-weight:900;}
+  .stats-grid span{font-family:var(--font-serif);font-size:.74rem;letter-spacing:.1em;text-transform:uppercase;color:#C7D2FE;}
+  @media (min-width:768px){.stats-grid{grid-template-columns:repeat(4,1fr);}}
+
+  /* ===================== TESTIMONIALS ===================== */
+  .testimonials{background:var(--bg-white);}
+  .t-grid{display:grid;gap:24px;}
+  .t-card{background:#fff;border:1px solid var(--border);border-radius:var(--radius-lg);padding:28px;box-shadow:var(--shadow-sm);transition:transform .2s ease, box-shadow .2s ease;}
+  .t-card:hover{transform:translateY(-4px);box-shadow:var(--shadow-md);}
+  .t-card.featured{border:1.5px solid var(--primary);box-shadow:var(--shadow-md);}
+  .t-stars{display:flex;gap:3px;color:var(--green);margin-bottom:16px;}
+  .t-stars svg{width:17px;height:17px;}
+  .t-quote{font-size:.95rem;color:var(--text-body);margin-bottom:22px;}
+  .t-person{display:flex;align-items:center;gap:12px;}
+  .t-avatar{
+    width:46px;height:46px;border-radius:50%;display:flex;align-items:center;justify-content:center;
+    color:#fff;font-weight:700;font-size:.85rem;flex-shrink:0;
+  }
+  .t-name{font-weight:700;font-size:.92rem;}
+  .t-role{font-size:.8rem;color:var(--text-muted);}
+  @media (min-width:1024px){.t-grid{grid-template-columns:repeat(3,1fr);}}
+
+  /* ===================== PRICING ===================== */
+  .pricing{background:var(--bg-section);}
+  .price-grid{display:grid;gap:24px;}
+  .price-card{
+    background:#fff;border:1.5px solid var(--border);border-radius:var(--radius-lg);
+    padding:32px 28px;text-align:center;position:relative;display:flex;flex-direction:column;
+    transition:transform .22s ease, box-shadow .22s ease;
+  }
+  .price-card:hover{transform:translateY(-4px);}
+  .price-card.popular{border-color:var(--primary);box-shadow:var(--shadow-lg);}
+  .popular-badge{
+    position:absolute;top:-1px;right:18px;transform:translateY(-50%);
+    background:var(--primary);color:#fff;font-size:.7rem;font-weight:700;letter-spacing:.06em;
+    padding:6px 14px;border-radius:6px;
+  }
+  .price-tier{font-weight:700;color:var(--text-muted);margin-bottom:10px;}
+  .price-amount{font-size:2rem;font-weight:900;margin-bottom:22px;}
+  .price-amount sup{font-size:1rem;}
+  .price-amount small{font-size:1rem;color:var(--text-muted);font-weight:500;}
+  .price-feats{margin-bottom:26px;flex:1;text-align:left;}
+  .price-feats li{padding:9px 0;border-bottom:1px dashed var(--border);font-size:.92rem;color:var(--text-dark);}
+  .price-feats li:last-child{border-bottom:none;}
+  @media (min-width:1024px){.price-grid{grid-template-columns:repeat(3,1fr);align-items:start;}.price-card.popular{transform:scale(1.04);}}
+
+  /* ===================== LEAD FORM / AUDIT ===================== */
+  .audit-section{background:var(--bg-white);}
+  .audit-grid{display:grid;gap:40px;align-items:start;}
+  .audit-text .eyebrow{display:inline-block;background:var(--green-bg);color:var(--green);padding:6px 14px;border-radius:99px;margin-bottom:16px;}
+  .audit-text h2{margin-bottom:14px;}
+  .audit-text p{margin-bottom:22px;}
+  .audit-price-tag{display:inline-flex;align-items:baseline;gap:6px;background:var(--primary-light);color:var(--primary);padding:10px 18px;border-radius:var(--radius-sm);font-weight:800;font-size:1.3rem;margin-bottom:24px;}
+  .audit-price-tag span{font-size:.85rem;font-weight:600;color:var(--text-body);}
+
+  .audit-card{background:#fff;border:1px solid var(--border);border-radius:var(--radius-lg);box-shadow:var(--shadow-md);padding:28px;}
+  .form-row{margin-bottom:18px;}
+  .form-row label{display:block;font-weight:600;font-size:.88rem;margin-bottom:7px;color:var(--text-dark);}
+  .form-row input,.form-row select,.form-row textarea{
+    width:100%;padding:13px 14px;border:1.5px solid var(--border);border-radius:var(--radius-sm);
+    color:var(--text-dark);transition:border-color .2s, box-shadow .2s;background:#fff;
+  }
+  .form-row input:focus,.form-row select:focus,.form-row textarea:focus{
+    outline:none;border-color:var(--primary);box-shadow:0 0 0 3px var(--primary-light);
+  }
+  .form-row textarea{resize:vertical;min-height:96px;}
+  .form-status{margin-top:14px;font-size:.9rem;font-weight:600;padding:12px 14px;border-radius:var(--radius-sm);display:none;}
+  .form-status.show{display:block;}
+  .form-status.success{background:var(--green-bg);color:var(--green);border:1px solid var(--green-border);}
+  .form-status.error{background:#FEF2F2;color:#DC2626;border:1px solid #FECACA;}
+  @media (min-width:1024px){.audit-grid{grid-template-columns:1fr 1fr;}}
+
+  /* ===================== FAQ ===================== */
+  .faq{background:var(--bg-section-2);}
+  .faq-list{max-width:760px;margin:0 auto;display:flex;flex-direction:column;gap:14px;}
+  .faq-item{background:#fff;border-radius:var(--radius-md);box-shadow:var(--shadow-sm);overflow:hidden;}
+  .faq-q{
+    width:100%;display:flex;align-items:center;justify-content:space-between;gap:12px;
+    padding:20px 22px;font-weight:700;text-align:left;font-size:1rem;
+  }
+  .faq-q svg{width:18px;height:18px;color:var(--text-muted);transition:transform .25s ease;flex-shrink:0;}
+  .faq-item.open .faq-q svg{transform:rotate(180deg);color:var(--primary);}
+  .faq-a{max-height:0;overflow:hidden;transition:max-height .3s ease;}
+  .faq-a div{padding:0 22px 20px;font-size:.92rem;color:var(--text-body);}
+
+  /* ===================== FINAL CTA ===================== */
+  .final-cta{background:var(--bg-white);}
+  .cta-banner{
+    background:radial-gradient(circle at 18% 18%,#6366F1,#4338CA 55%,#3730A3 100%);
+    border-radius:28px;padding:54px 26px;text-align:center;color:#fff;
+  }
+  .cta-banner h2{color:#fff;font-size:2rem;margin-bottom:16px;}
+  .cta-banner p{color:#DDDCFB;max-width:520px;margin:0 auto 28px;}
+  .cta-buttons{display:flex;flex-wrap:wrap;gap:14px;justify-content:center;}
+  .btn-white{background:#fff;color:var(--primary);}
+  .btn-white:hover{background:#F4F4FF;transform:translateY(-2px);}
+  .btn-ghost-dark{background:var(--primary-dark);color:#fff;}
+  .btn-ghost-dark:hover{background:#2E2780;transform:translateY(-2px);}
+  @media (min-width:768px){.cta-banner{padding:68px 60px;}.cta-banner h2{font-size:2.6rem;}}
+
+  /* ===================== FOOTER ===================== */
+  footer{background:#fff;border-top:1px solid var(--border);padding:60px 0 0;}
+  .footer-grid{display:grid;gap:36px;margin-bottom:46px;}
+  .footer-about p{margin:14px 0 18px;font-size:.92rem;max-width:320px;}
+  .footer-icons{display:flex;gap:12px;}
+  .footer-icons a{width:36px;height:36px;border-radius:50%;background:var(--bg-section);display:flex;align-items:center;justify-content:center;color:var(--text-body);transition:background .2s,color .2s;}
+  .footer-icons a:hover{background:var(--primary);color:#fff;}
+  .footer-col h4{font-family:var(--font-serif);font-size:.78rem;letter-spacing:.1em;text-transform:uppercase;color:var(--text-muted);margin-bottom:16px;font-weight:600;}
+  .footer-col ul li{margin-bottom:11px;}
+  .footer-col a{font-size:.92rem;color:var(--text-body);transition:color .2s;}
+  .footer-col a:hover{color:var(--primary);}
+  .footer-bottom{border-top:1px solid var(--border);padding:22px 0;text-align:center;color:var(--text-muted);font-size:.85rem;}
+  @media (min-width:768px){.footer-grid{grid-template-columns:1.4fr 1fr 1fr 1fr;}}
+
+  /* ===================== SCROLL REVEAL ===================== */
+  .reveal{opacity:0;transform:translateY(24px);transition:opacity .6s ease, transform .6s ease;}
+  .reveal.in{opacity:1;transform:translateY(0);}
+</style>
+</head>
+<body>
+
+<!-- ===================== CHAT FAB ===================== -->
+<button class="chat-fab" id="chatFab" aria-label="Chat with us">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 01-.9 3.8 8.5 8.5 0 01-7.6 4.7 8.38 8.38 0 01-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 01-.9-3.8 8.5 8.5 0 014.7-7.6 8.38 8.38 0 013.8-.9h.5a8.48 8.48 0 018 8v.5z"/></svg>
+</button>
+
+<!-- ===================== HEADER ===================== -->
+<header id="siteHeader">
+  <div class="container nav-wrap">
+    <a href="#top" class="logo">
+      <span class="logo-badge">
+        <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.59 13.41L13.42 20.58a2 2 0 01-2.83 0L2 12V2h10l8.59 8.59a2 2 0 010 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/></svg>
+      </span>
+      SmartPrice
+    </a>
+    <nav class="main-nav" aria-label="Primary">
+      <ul>
+        <li><a href="#categories">Features</a></li>
+        <li><a href="#categories">Categories</a></li>
+        <li><a href="#audit" class="active">Price Alerts</a></li>
+        <li><a href="#ai-assistant">AI Assistant</a></li>
+        <li><a href="#testimonials">Reviews</a></li>
+      </ul>
+    </nav>
+    <div class="header-actions">
+      <a href="#" class="signin">Sign In</a>
+      <a href="#audit" class="btn btn-primary">Get Started</a>
+    </div>
+    <button class="menu-toggle" id="menuToggle" aria-label="Open menu" aria-expanded="false">
+      <svg id="menuIconOpen" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="24" height="24"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+      <svg id="menuIconClose" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="24" height="24" style="display:none"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+    </button>
+  </div>
+  <div class="mobile-panel" id="mobilePanel">
+    <a href="#categories">Features</a>
+    <a href="#categories">Categories</a>
+    <a href="#audit" class="active">Price Alerts</a>
+    <a href="#ai-assistant">AI Assistant</a>
+    <a href="#testimonials">Reviews</a>
+    <div class="mp-actions">
+      <a href="#" class="btn btn-outline btn-block">Sign In</a>
+      <a href="#audit" class="btn btn-primary btn-block">Get Started</a>
+    </div>
+  </div>
+</header>
+
+<main id="top">
+
+  <!-- ===================== HERO ===================== -->
+  <section class="hero">
+    <div class="container">
+      <div class="hero-copy">
+        <h1>Compare Prices Across <span class="accent">Every Store.</span> Save More Every Time.</h1>
+        <p class="lead">Real-time intelligence connecting you to Amazon, Flipkart, Croma, and 50+ major retailers. The smarter way to shop starts here.</p>
+        <div class="hero-buttons">
+          <a href="#compare-table" class="btn btn-primary">Compare Prices Now
+            <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+          </a>
+          <a href="#ai-assistant" class="btn btn-outline">
+            <svg class="icon" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+            Watch Demo
+          </a>
+        </div>
+        <div class="partners">
+          <span class="eyebrow">Global Partners:</span>
+          <div class="partner-icons">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="3" width="15" height="13"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
+          </div>
+        </div>
+      </div>
+
+      <div class="hero-card">
+        <div class="search-row">
+          <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+          iPhone 16 Pro Max 256GB
+        </div>
+
+        <div class="deal-row best">
+          <div class="deal-left">
+            <span class="store-badge">AMZ</span>
+            <div>
+              <div class="deal-label">Best Deal Found</div>
+              <div class="deal-price">₹1,19,900</div>
+            </div>
+          </div>
+          <span class="save-pill">SAVED ₹4,000</span>
+        </div>
+
+        <div class="deal-row">
+          <div class="deal-left">
+            <span class="store-badge">FK</span>
+            <div class="deal-price">₹1,21,900</div>
+          </div>
+          <span class="deal-meta">2-day delivery</span>
+        </div>
+
+        <div class="deal-row">
+          <div class="deal-left">
+            <span class="store-badge">CR</span>
+            <div class="deal-price">₹1,23,900</div>
+          </div>
+          <span class="deal-meta">Store Pickup</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== TRUSTED BRANDS ===================== -->
+  <section class="brands reveal">
+    <div class="container">
+      <span class="eyebrow" style="display:block;text-align:center;margin-bottom:26px;">Connected to 50+ Retailers</span>
+      <div class="brand-row">
+        <span class="b-amazon">Amazon</span>
+        <span class="b-flipkart">Flipkart</span>
+        <span class="b-croma">Croma</span>
+        <span class="b-reliance">Reliance</span>
+        <span class="b-vijay">Vijay Sales</span>
+        <span class="b-tata">Tata Cliq</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== CATEGORIES ===================== -->
+  <section class="categories reveal" id="categories">
+    <div class="container">
+      <div class="cat-head">
+        <div>
+          <h2>Shop by Category</h2>
+          <p>Intelligent price tracking across all your favorite segments.</p>
+        </div>
+        <a href="#categories" class="view-all">View All
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+        </a>
+      </div>
+      <div class="cat-grid">
+        <div class="cat-card">
+          <div class="cat-icon"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="7" y="2" width="10" height="20" rx="2"/><line x1="11" y1="18" x2="13" y2="18"/></svg></div>
+          <h3>Smartphones</h3><p>2.4k tracked products</p>
+        </div>
+        <div class="cat-card">
+          <div class="cat-icon"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="12" rx="1"/><line x1="2" y1="20" x2="22" y2="20"/></svg></div>
+          <h3>Laptops</h3><p>1.8k tracked products</p>
+        </div>
+        <div class="cat-card">
+          <div class="cat-icon"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 18v-6a9 9 0 0118 0v6"/><path d="M21 19a2 2 0 01-2 2h-1a2 2 0 01-2-2v-3a2 2 0 012-2h3zM3 19a2 2 0 002 2h1a2 2 0 002-2v-3a2 2 0 00-2-2H3z"/></svg></div>
+          <h3>Audio</h3><p>900+ tracked products</p>
+        </div>
+        <div class="cat-card">
+          <div class="cat-icon"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="7"/><polyline points="12 9 12 12 13.5 13.5"/></svg></div>
+          <h3>Wearables</h3><p>1.2k tracked products</p>
+        </div>
+        <div class="cat-card">
+          <div class="cat-icon"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="13" rx="2"/><polyline points="17 2 12 7 7 2"/></svg></div>
+          <h3>Televisions</h3><p>600+ tracked products</p>
+        </div>
+        <div class="cat-card">
+          <div class="cat-icon"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M23 19a2 2 0 01-2 2H3a2 2 0 01-2-2V8a2 2 0 012-2h4l2-3h6l2 3h4a2 2 0 012 2z"/><circle cx="12" cy="13" r="4"/></svg></div>
+          <h3>Cameras</h3><p>450+ tracked products</p>
+        </div>
+        <div class="cat-card">
+          <div class="cat-icon"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="2" width="14" height="20" rx="2"/><line x1="5" y1="10" x2="19" y2="10"/></svg></div>
+          <h3>Appliances</h3><p>3.1k tracked products</p>
+        </div>
+        <div class="cat-card">
+          <div class="cat-icon"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="6" width="20" height="12" rx="6"/><line x1="6" y1="11" x2="10" y2="11"/><line x1="8" y1="9" x2="8" y2="13"/><circle cx="15" cy="12" r="1"/><circle cx="18" cy="10" r="1"/></svg></div>
+          <h3>Gaming</h3><p>850+ tracked products</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== HOW IT WORKS ===================== -->
+  <section class="how reveal">
+    <div class="container">
+      <div class="section-head"><h2>Your Journey to Savings</h2></div>
+      <div class="steps">
+        <div class="step">
+          <div class="step-circle"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></div>
+          <h3>1. Search</h3>
+          <p>Enter any product name or paste a link from any store.</p>
+        </div>
+        <div class="step">
+          <div class="step-circle"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="17 1 21 5 17 9"/><path d="M3 11V9a4 4 0 014-4h14"/><polyline points="7 23 3 19 7 15"/><path d="M21 13v2a4 4 0 01-4 4H3"/></svg></div>
+          <h3>2. Compare</h3>
+          <p>See real-time prices, delivery dates, and coupons in one view.</p>
+        </div>
+        <div class="step">
+          <div class="step-circle filled"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 002 1.61h9.72a2 2 0 002-1.61L23 6H6"/></svg></div>
+          <h3>3. Buy</h3>
+          <p>Click the best deal and complete your purchase directly.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== FEATURE: REAL-TIME COMPARISON ===================== -->
+  <section class="feature reveal">
+    <div class="container">
+      <div class="feature-text">
+        <span class="eyebrow">Precision Data</span>
+        <h2>Real-Time Store Comparison</h2>
+        <p>Our proprietary crawlers update prices every 60 seconds. We don't just show prices; we show tax details, shipping costs, and ongoing card offers so you see the final checkout price instantly.</p>
+        <ul class="check-list">
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9 12l2 2 4-4"/></svg>50+ Retailers Tracked</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9 12l2 2 4-4"/></svg>Hidden Coupon Discovery</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9 12l2 2 4-4"/></svg>Card Discount Calculations</li>
+        </ul>
+      </div>
+      <div class="chart-card">
+        <div class="bars"><i></i><i></i><i></i><i></i><i></i></div>
+        <div class="chart-caption">Live Price Volatility Index</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== FEATURE: PRICE DROP ALERTS ===================== -->
+  <section class="feature alt reverse reveal">
+    <div class="container">
+      <div class="alert-card">
+        <div class="alert-head">
+          <h3>Price Drops Today</h3>
+          <span>2,103 alerts sent</span>
+        </div>
+        <div class="alert-item">
+          <div class="alert-left">
+            <span class="alert-icon"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 18v-6a9 9 0 0118 0v6"/><path d="M21 19a2 2 0 01-2 2h-1a2 2 0 01-2-2v-3a2 2 0 012-2h3zM3 19a2 2 0 002 2h1a2 2 0 002-2v-3a2 2 0 00-2-2H3z"/></svg></span>
+            <div><div class="alert-name">Sony WH-1000XM5</div><div class="alert-drop">Dropped by ₹3,500</div></div>
+          </div>
+          <span class="bell-btn"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8a6 6 0 10-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 01-3.46 0"/></svg></span>
+        </div>
+        <div class="alert-item">
+          <div class="alert-left">
+            <span class="alert-icon"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="7"/><polyline points="12 9 12 12 13.5 13.5"/></svg></span>
+            <div><div class="alert-name">Apple Watch Series 9</div><div class="alert-drop">Dropped by ₹1,200</div></div>
+          </div>
+          <span class="bell-btn"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8a6 6 0 10-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 01-3.46 0"/></svg></span>
+        </div>
+      </div>
+      <div class="feature-text">
+        <span class="eyebrow" style="background:var(--green-bg);color:var(--green);display:inline-block;padding:6px 14px;border-radius:99px;margin-bottom:16px;">Smart Monitoring</span>
+        <h2>Instant Price Drop Alerts</h2>
+        <p>Never miss a flash sale again. Set your target price and we'll send you a push notification, email, or WhatsApp message the second the price hits your mark.</p>
+        <a href="#audit" class="btn btn-primary">Set Alert for Free</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== COMPARISON TABLE ===================== -->
+  <section class="compare-table-section reveal" id="compare-table">
+    <div class="container">
+      <div class="section-head">
+        <h2>See Every Store, Side by Side</h2>
+        <p>Comparing: iPhone 16 Pro Max 256GB</p>
+      </div>
+      <div class="ctable-wrap">
+        <table class="ctable">
+          <thead>
+            <tr><th>Store</th><th>Price</th><th>Offers</th><th>Delivery</th><th>Rating</th><th>Action</th></tr>
+          </thead>
+          <tbody>
+            <tr class="best-row">
+              <td><span class="store-name">Amazon <span class="best-badge">BEST DEAL</span></span></td>
+              <td class="price-cell">₹1,19,900</td>
+              <td>₹5,000 Instant Disc with HDFC</td>
+              <td class="delivery-good">Today, 9 PM</td>
+              <td><span class="stars">
+                <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87L18.18 21 12 17.77 5.82 21 7 14.14 2 9.27l6.91-1.01z"/></svg>
+                <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87L18.18 21 12 17.77 5.82 21 7 14.14 2 9.27l6.91-1.01z"/></svg>
+                <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87L18.18 21 12 17.77 5.82 21 7 14.14 2 9.27l6.91-1.01z"/></svg>
+                <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87L18.18 21 12 17.77 5.82 21 7 14.14 2 9.27l6.91-1.01z"/></svg>
+                <svg class="empty" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87L18.18 21 12 17.77 5.82 21 7 14.14 2 9.27l6.91-1.01z"/></svg>
+              </span></td>
+              <td><a href="#audit" class="btn btn-primary" style="padding:9px 18px;font-size:.85rem;">Shop Now</a></td>
+            </tr>
+            <tr>
+              <td><span class="store-name">Flipkart</span></td>
+              <td class="price-cell">₹1,21,900</td>
+              <td>5% Cashback on Axis Card</td>
+              <td class="delivery-neutral">Tomorrow</td>
+              <td><span class="stars">
+                <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87L18.18 21 12 17.77 5.82 21 7 14.14 2 9.27l6.91-1.01z"/></svg>
+                <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87L18.18 21 12 17.77 5.82 21 7 14.14 2 9.27l6.91-1.01z"/></svg>
+                <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87L18.18 21 12 17.77 5.82 21 7 14.14 2 9.27l6.91-1.01z"/></svg>
+                <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87L18.18 21 12 17.77 5.82 21 7 14.14 2 9.27l6.91-1.01z"/></svg>
+                <svg class="empty" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87L18.18 21 12 17.77 5.82 21 7 14.14 2 9.27l6.91-1.01z"/></svg>
+              </span></td>
+              <td><a href="#audit" class="btn btn-outline" style="padding:9px 18px;font-size:.85rem;">Visit Site</a></td>
+            </tr>
+            <tr>
+              <td><span class="store-name">Croma</span></td>
+              <td class="price-cell">₹1,24,900</td>
+              <td>NeuCoins + Store Pick-up</td>
+              <td class="delivery-neutral">Pickup Available</td>
+              <td><span class="stars">
+                <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87L18.18 21 12 17.77 5.82 21 7 14.14 2 9.27l6.91-1.01z"/></svg>
+                <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87L18.18 21 12 17.77 5.82 21 7 14.14 2 9.27l6.91-1.01z"/></svg>
+                <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87L18.18 21 12 17.77 5.82 21 7 14.14 2 9.27l6.91-1.01z"/></svg>
+                <svg class="empty" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87L18.18 21 12 17.77 5.82 21 7 14.14 2 9.27l6.91-1.01z"/></svg>
+                <svg class="empty" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87L18.18 21 12 17.77 5.82 21 7 14.14 2 9.27l6.91-1.01z"/></svg>
+              </span></td>
+              <td><a href="#audit" class="btn btn-outline" style="padding:9px 18px;font-size:.85rem;">Visit Site</a></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== AI ASSISTANT ===================== -->
+  <section class="ai-section reveal" id="ai-assistant">
+    <div class="container">
+      <div class="ai-mock">
+        <div class="bubble-user">I need a laptop for video editing under ₹80,000. Any suggestions?</div>
+        <div class="bubble-ai">
+          Based on current pricing and specs, here are the top 3 high-performance options under ₹80k:
+          <div class="ai-product">
+            <span class="thumb"></span>
+            <div><div class="pname">ASUS Vivobook 16X</div><div><span class="pprice">₹74,990</span><span class="pold">₹89,990</span></div></div>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+          </div>
+          <div class="ai-product">
+            <span class="thumb"></span>
+            <div><div class="pname">Lenovo LOQ 15</div><div><span class="pprice">₹79,990</span><span class="pold">₹94,990</span></div></div>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+          </div>
+        </div>
+        <div class="ai-input">
+          <span>Ask AI Assistant...</span>
+          <span class="ai-send"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg></span>
+        </div>
+      </div>
+      <div class="feature-text">
+        <div class="ai-icon-badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="8" width="16" height="12" rx="2"/><circle cx="9" cy="14" r="1"/><circle cx="15" cy="14" r="1"/><line x1="12" y1="4" x2="12" y2="8"/><circle cx="12" cy="3" r="1"/></svg></div>
+        <h2>Conversational Intelligence</h2>
+        <p>Our AI Assistant doesn't just find prices; it understands your needs. It analyzes technical specifications, user reviews, and price trends to recommend the exact product that fits your budget and requirements.</p>
+        <div class="mini-cards">
+          <div class="mini-card"><h4>Spec Analysis</h4><p>Compares hardware benchmarks across brands.</p></div>
+          <div class="mini-card"><h4>Review Scoring</h4><p>Summarizes thousands of verified buyers.</p></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== STATS ===================== -->
+  <section class="stats reveal">
+    <div class="container">
+      <div class="stats-grid">
+        <div><b>12M+</b><span>Products Tracked</span></div>
+        <div><b>50+</b><span>Major Retailers</span></div>
+        <div><b>5M+</b><span>Active Users</span></div>
+        <div><b>₹24Cr+</b><span>Money Saved</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== TESTIMONIALS ===================== -->
+  <section class="testimonials reveal" id="testimonials">
+    <div class="container">
+      <div class="section-head"><h2>What Smart Shoppers Say</h2></div>
+      <div class="t-grid">
+        <div class="t-card">
+          <div class="t-stars">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87L18.18 21 12 17.77 5.82 21 7 14.14 2 9.27l6.91-1.01z"/></svg>
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87L18.18 21 12 17.77 5.82 21 7 14.14 2 9.27l6.91-1.01z"/></svg>
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87L18.18 21 12 17.77 5.82 21 7 14.14 2 9.27l6.91-1.01z"/></svg>
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87L18.18 21 12 17.77 5.82 21 7 14.14 2 9.27l6.91-1.01z"/></svg>
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87L18.18 21 12 17.77 5.82 21 7 14.14 2 9.27l6.91-1.01z"/></svg>
+          </div>
+          <p class="t-quote">"I saved over ₹12,000 on my Sony Mirrorless camera. SmartPrice showed me a deal on Vijay Sales that Amazon hadn't listed yet. Highly recommend!"</p>
+          <div class="t-person">
+            <span class="t-avatar" style="background:linear-gradient(135deg,#F472B6,#7C3AED);">RS</span>
+            <div><div class="t-name">Rahul Sharma</div><div class="t-role">Tech Enthusiast</div></div>
+          </div>
+        </div>
+        <div class="t-card featured">
+          <div class="t-stars">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87L18.18 21 12 17.77 5.82 21 7 14.14 2 9.27l6.91-1.01z"/></svg>
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87L18.18 21 12 17.77 5.82 21 7 14.14 2 9.27l6.91-1.01z"/></svg>
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87L18.18 21 12 17.77 5.82 21 7 14.14 2 9.27l6.91-1.01z"/></svg>
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87L18.18 21 12 17.77 5.82 21 7 14.14 2 9.27l6.91-1.01z"/></svg>
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87L18.18 21 12 17.77 5.82 21 7 14.14 2 9.27l6.91-1.01z"/></svg>
+          </div>
+          <p class="t-quote">"The Price Drop Alert is a game-changer. I waited for two weeks for the iPad Air price to hit my target, and SmartPrice pinged me at 3 AM. Bought it immediately."</p>
+          <div class="t-person">
+            <span class="t-avatar" style="background:linear-gradient(135deg,#34D399,#0EA5E9);">AV</span>
+            <div><div class="t-name">Ananya Verma</div><div class="t-role">Verified Buyer</div></div>
+          </div>
+        </div>
+        <div class="t-card">
+          <div class="t-stars">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87L18.18 21 12 17.77 5.82 21 7 14.14 2 9.27l6.91-1.01z"/></svg>
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87L18.18 21 12 17.77 5.82 21 7 14.14 2 9.27l6.91-1.01z"/></svg>
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87L18.18 21 12 17.77 5.82 21 7 14.14 2 9.27l6.91-1.01z"/></svg>
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87L18.18 21 12 17.77 5.82 21 7 14.14 2 9.27l6.91-1.01z"/></svg>
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87L18.18 21 12 17.77 5.82 21 7 14.14 2 9.27l6.91-1.01z"/></svg>
+          </div>
+          <p class="t-quote">"The AI Laptop recommender is surprisingly accurate. It didn't just push the expensive models, but gave me real performance-to-price ratios."</p>
+          <div class="t-person">
+            <span class="t-avatar" style="background:linear-gradient(135deg,#FB923C,#4F46E5);">SD</span>
+            <div><div class="t-name">Samuel D'Souza</div><div class="t-role">Professional Photographer</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== PRICING ===================== -->
+  <section class="pricing reveal">
+    <div class="container">
+      <div class="section-head"><h2>Simple Pricing</h2></div>
+      <div class="price-grid">
+        <div class="price-card">
+          <div class="price-tier">Essential</div>
+          <div class="price-amount">Free</div>
+          <ul class="price-feats">
+            <li>Track up to 10 products</li>
+            <li>Standard price alerts (Email)</li>
+            <li>Comparison across 10 stores</li>
+          </ul>
+          <button class="btn btn-outline" disabled>Current Plan</button>
+        </div>
+        <div class="price-card popular">
+          <span class="popular-badge">POPULAR</span>
+          <div class="price-tier">Pro</div>
+          <div class="price-amount">₹199<small>/mo</small></div>
+          <ul class="price-feats">
+            <li>Unlimited product tracking</li>
+            <li>Instant WhatsApp Alerts</li>
+            <li>AI Shopping Assistant Access</li>
+            <li>Price History Charts (2 Years)</li>
+          </ul>
+          <a href="#audit" class="btn btn-primary">Get Started</a>
+        </div>
+        <div class="price-card">
+          <div class="price-tier">Power</div>
+          <div class="price-amount">₹499<small>/mo</small></div>
+          <ul class="price-feats">
+            <li>Everything in Pro</li>
+            <li>Exclusive Coupon Codes</li>
+            <li>Early access to deal predictions</li>
+            <li>Chrome Extension Included</li>
+          </ul>
+          <a href="#audit" class="btn btn-outline">Upgrade Now</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== LEAD FORM / FREE AUDIT ===================== -->
+  <section class="audit-section reveal" id="audit">
+    <div class="container">
+      <div class="audit-grid">
+        <div class="audit-text">
+          <span class="eyebrow">Personalized Audit</span>
+          <h2>Get a Free Pricing Audit for ₹99</h2>
+          <p>Tell us what you're shopping for and where in Puducherry you're based, and our team will manually review prices, coupons, and card offers across every major retailer for you — delivered as a personal report within 24 hours.</p>
+          <div class="audit-price-tag">₹99 <span>one-time, fully refundable if we don't save you more</span></div>
+          <ul class="check-list">
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9 12l2 2 4-4"/></svg>Personalized savings report</li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9 12l2 2 4-4"/></svg>Area-specific deals across Puducherry</li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9 12l2 2 4-4"/></svg>Delivered within 24 hours</li>
+          </ul>
+        </div>
+
+        <div class="audit-card">
+          <form id="leadForm" novalidate>
+            <div class="form-row">
+              <label for="fullName">Full Name</label>
+              <input type="text" id="fullName" name="fullName" placeholder="e.g. Priya Raman" required>
+            </div>
+            <div class="form-row">
+              <label for="phone">Phone Number</label>
+              <input type="tel" id="phone" name="phone" placeholder="10-digit mobile number" pattern="[6-9][0-9]{9}" maxlength="10" required>
+            </div>
+            <div class="form-row">
+              <label for="location">Location (Area in Pondy)</label>
+              <input type="text" id="location" name="location" placeholder="e.g. Lawspet, Muthialpet, Reddiarpalayam" required>
+            </div>
+            <div class="form-row">
+              <label for="service">Service Needed</label>
+              <select id="service" name="service" required>
+                <option value="" disabled selected>Select a service</option>
+                <option value="Personalized Price Audit">Personalized Price Audit</option>
+                <option value="Price Drop Alert Setup">Price Drop Alert Setup</option>
+                <option value="AI Shopping Assistant Walkthrough">AI Shopping Assistant Walkthrough</option>
+                <option value="Chrome Extension Setup Help">Chrome Extension Setup Help</option>
+                <option value="General Consultation">General Consultation</option>
+              </select>
+            </div>
+            <div class="form-row">
+              <label for="message">Message</label>
+              <textarea id="message" name="message" placeholder="Tell us what you're looking to buy or save on..."></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary btn-block" id="submitBtn">Pay ₹99 &amp; Get My Free Audit</button>
+            <div class="form-status" id="formStatus" role="status" aria-live="polite"></div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== FAQ ===================== -->
+  <section class="faq reveal">
+    <div class="container">
+      <div class="section-head"><h2>Frequently Asked Questions</h2></div>
+      <div class="faq-list">
+        <div class="faq-item">
+          <button class="faq-q">How accurate are the prices shown?
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+          </button>
+          <div class="faq-a"><div>Our crawlers refresh prices every 60 seconds directly from each retailer's checkout page, so what you see includes tax, shipping, and live card offers — not just the listed sticker price.</div></div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-q">Do you track regional store prices?
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+          </button>
+          <div class="faq-a"><div>Yes. Alongside the major national retailers, our Free Audit service covers local and regional sellers in your area, including stores across Puducherry, so you don't miss nearby deals.</div></div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-q">Is my personal data safe with AI Assistant?
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+          </button>
+          <div class="faq-a"><div>Your conversations and form details are used only to generate your price comparisons and audit report. We never sell your data, and you can request deletion at any time.</div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== FINAL CTA ===================== -->
+  <section class="final-cta reveal">
+    <div class="container">
+      <div class="cta-banner">
+        <h2>Stop Overpaying. Start Comparing.</h2>
+        <p>Join 5 million+ users who save on every purchase. It's free, it's fast, and it's powered by intelligence.</p>
+        <div class="cta-buttons">
+          <a href="#audit" class="btn btn-white">Get Started for Free</a>
+          <a href="#" class="btn btn-ghost-dark">
+            <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+            Download Chrome Extension
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<!-- ===================== FOOTER ===================== -->
+<footer>
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-about">
+        <a href="#top" class="logo">
+          <span class="logo-badge"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.59 13.41L13.42 20.58a2 2 0 01-2.83 0L2 12V2h10l8.59 8.59a2 2 0 010 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/></svg></span>
+          SmartPrice
+        </a>
+        <p>The world's most advanced AI price comparison engine. Helping you make better decisions with real-time data.</p>
+        <div class="footer-icons">
+          <a href="#" aria-label="Website"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10 15.3 15.3 0 014-10z"/></svg></a>
+          <a href="#" aria-label="Phone"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72c.127.96.362 1.903.7 2.81a2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.338 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg></a>
+          <a href="#" aria-label="Email"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16a2 2 0 012 2v12a2 2 0 01-2 2H4a2 2 0 01-2-2V6a2 2 0 012-2z"/><polyline points="22,6 12,13 2,6"/></svg></a>
+        </div>
+      </div>
+      <div class="footer-col">
+        <h4>Platform</h4>
+        <ul>
+          <li><a href="#categories">Features</a></li>
+          <li><a href="#">Pricing</a></li>
+          <li><a href="#">Chrome Extension</a></li>
+          <li><a href="#">Mobile App</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Company</h4>
+        <ul>
+          <li><a href="#">About Us</a></li>
+          <li><a href="#">Careers</a></li>
+          <li><a href="#">Contact</a></li>
+          <li><a href="#">Privacy Policy</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Support</h4>
+        <ul>
+          <li><a href="#">Help Center</a></li>
+          <li><a href="#">API Documentation</a></li>
+          <li><a href="#">Terms of Service</a></li>
+          <li><a href="#">Retailer Portal</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">© 2024 SmartPrice AI. All rights reserved. Precision Intelligence in every search.</div>
+  </div>
+</footer>
+
+<script>
+(function(){
+  "use strict";
+
+  /* ---------- CONFIG ---------- */
+  var SCRIPT_URL = "https://script.google.com/macros/s/AKfycbz3AnkF2OyPC1vsqGBJUorTY8PGKh0o-rgKeAnYmIWOvrZ3lnhvJEtM3OFSfjXCZhRZyQ/exec";
+  // TODO: replace with your real, complete Cashfree payment link before going live.
+  var PAYMENT_URL = "https://payments.cashfree.com/forms/REPLACE_WITH_YOUR_AUDIT_LINK";
+
+  /* ---------- HEADER SCROLL SHADOW ---------- */
+  var header = document.getElementById('siteHeader');
+  window.addEventListener('scroll', function(){
+    if(window.scrollY > 8){ header.classList.add('scrolled'); }
+    else{ header.classList.remove('scrolled'); }
+  });
+
+  /* ---------- MOBILE MENU ---------- */
+  var menuToggle = document.getElementById('menuToggle');
+  var mobilePanel = document.getElementById('mobilePanel');
+  var iconOpen = document.getElementById('menuIconOpen');
+  var iconClose = document.getElementById('menuIconClose');
+  menuToggle.addEventListener('click', function(){
+    var isOpen = mobilePanel.classList.toggle('open');
+    menuToggle.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+    iconOpen.style.display = isOpen ? 'none' : 'block';
+    iconClose.style.display = isOpen ? 'block' : 'none';
+  });
+  document.querySelectorAll('.mobile-panel a').forEach(function(a){
+    a.addEventListener('click', function(){
+      mobilePanel.classList.remove('open');
+      iconOpen.style.display = 'block';
+      iconClose.style.display = 'none';
+      menuToggle.setAttribute('aria-expanded', 'false');
+    });
+  });
+
+  /* ---------- FAQ ACCORDION ---------- */
+  document.querySelectorAll('.faq-item').forEach(function(item){
+    var btn = item.querySelector('.faq-q');
+    var panel = item.querySelector('.faq-a');
+    btn.addEventListener('click', function(){
+      var isOpen = item.classList.contains('open');
+      document.querySelectorAll('.faq-item.open').forEach(function(openItem){
+        if(openItem !== item){
+          openItem.classList.remove('open');
+          openItem.querySelector('.faq-a').style.maxHeight = null;
+        }
+      });
+      if(isOpen){
+        item.classList.remove('open');
+        panel.style.maxHeight = null;
+      } else {
+        item.classList.add('open');
+        panel.style.maxHeight = panel.scrollHeight + 'px';
+      }
+    });
+  });
+
+  /* ---------- SCROLL REVEAL ---------- */
+  if('IntersectionObserver' in window){
+    var io = new IntersectionObserver(function(entries){
+      entries.forEach(function(entry){
+        if(entry.isIntersecting){
+          entry.target.classList.add('in');
+          io.unobserve(entry.target);
+        }
+      });
+    }, {threshold:0.12});
+    document.querySelectorAll('.reveal').forEach(function(el){ io.observe(el); });
+  } else {
+    document.querySelectorAll('.reveal').forEach(function(el){ el.classList.add('in'); });
+  }
+
+  /* ---------- CHAT FAB (placeholder) ---------- */
+  document.getElementById('chatFab').addEventListener('click', function(){
+    alert('Hi! Our AI Assistant chat is coming right up — for now, scroll to the "AI Assistant" section above to see it in action.');
+  });
+
+  /* ---------- LEAD FORM -> GOOGLE APPS SCRIPT -> CASHFREE PAYMENT ---------- */
+  var form = document.getElementById('leadForm');
+  var statusBox = document.getElementById('formStatus');
+  var submitBtn = document.getElementById('submitBtn');
+
+  function showStatus(message, type){
+    statusBox.textContent = message;
+    statusBox.className = 'form-status show ' + type;
+  }
+
+  form.addEventListener('submit', function(e){
+    e.preventDefault();
+
+    var name = document.getElementById('fullName').value.trim();
+    var phone = document.getElementById('phone').value.trim();
+    var location = document.getElementById('location').value.trim();
+    var service = document.getElementById('service').value;
+    var message = document.getElementById('message').value.trim();
+
+    if(!name || !phone || !location || !service){
+      showStatus('Please fill in your name, phone, location, and the service needed.', 'error');
+      return;
+    }
+    if(!/^[6-9][0-9]{9}$/.test(phone)){
+      showStatus('Please enter a valid 10-digit Indian mobile number.', 'error');
+      return;
+    }
+
+    submitBtn.disabled = true;
+    submitBtn.textContent = 'Submitting...';
+
+    var params = new URLSearchParams({
+      name: name,
+      phone: phone,
+      location: location,
+      service: service,
+      message: message
+    });
+
+    var url = SCRIPT_URL + "?" + params.toString();
+
+    fetch(url, {
+      method: "GET",
+      mode: "no-cors"
+    })
+    .then(function(){
+      showSuccessMessage();
+      form.reset();
+      setTimeout(function(){
+        window.location.href = PAYMENT_URL;
+      }, 1400);
+    })
+    .catch(function(){
+      showErrorMessage();
+    });
+
+    function showSuccessMessage(){
+      showStatus('Lead saved! Redirecting you to payment for your ₹99 audit...', 'success');
+      submitBtn.disabled = false;
+      submitBtn.textContent = 'Pay ₹99 & Get My Free Audit';
+    }
+
+    function showErrorMessage(){
+      showStatus('Something went wrong saving your details. Please check your connection and try again.', 'error');
+      submitBtn.disabled = false;
+      submitBtn.textContent = 'Pay ₹99 & Get My Free Audit';
+    }
+  });
+
+})();
+</script>
+</body>
+</html>
